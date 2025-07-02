@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>اختبار سرعة الإنترنت</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: #333;
+    }
+    .results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+      width: 100%;
+      max-width: 600px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .value {
+      font-size: 24px;
+      color: #007bff;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>اختبار سرعة الإنترنت</h1>
+  <button onclick="startTest()">ابدأ الاختبار</button>
+  <div class="results">
+    <div class="card">
+      <h3>التحميل</h3>
+      <div id="download" class="value">0 Mbps</div>
+    </div>
+    <div class="card">
+      <h3>الرفع</h3>
+      <div id="upload" class="value">0 Mbps</div>
+    </div>
+    <div class="card">
+      <h3>Ping</h3>
+      <div id="ping" class="value">0 ms</div>
+    </div>
+    <div class="card">
+      <h3>Jitter</h3>
+      <div id="jitter" class="value">0 ms</div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/gh/librespeed/speedtest@latest/speedtest.min.js"></script>
+  <script>
+    let st = new Speedtest();
+
+    function startTest() {
+      st.onupdate = data => {
+        document.getElementById("download").textContent = (data.dl || 0).toFixed(2) + " Mbps";
+        document.getElementById("upload").textContent = (data.ul || 0).toFixed(2) + " Mbps";
+        document.getElementById("ping").textContent = (data.ping || 0).toFixed(0) + " ms";
+        document.getElementById("jitter").textContent = (data.jitter || 0).toFixed(0) + " ms";
+      };
+
+      st.onend = () => {
+        console.log("الاختبار انتهى.");
+      };
+
+      st.start();
+    }
+  </script>
+</body>
+</html>
